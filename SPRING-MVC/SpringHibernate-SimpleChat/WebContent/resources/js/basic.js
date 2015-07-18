@@ -7,6 +7,7 @@ var sendMessagesForm = document.getElementById('sendMsgForm');
 var messagesField = document.getElementById('messageArea');
 var messagesStr = '';
 
+sendAjaxQuery();
 var int = self.setInterval("sendAjaxQuery()", 2000);
 
 function sendAjaxQuery() {
@@ -28,10 +29,6 @@ function sendAjaxQuery() {
 				    }
 				}
 			});
-}
-
-function addNewMessage() {
-	sendMessagesForm.submit();
 }
 
 function sendNewMessage() {
@@ -57,4 +54,5 @@ function sendNewMessage() {
 		    }
 		}
 	});
+	messagesField.value = '';
 }

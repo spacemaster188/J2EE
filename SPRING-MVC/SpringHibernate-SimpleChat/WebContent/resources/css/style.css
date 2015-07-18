@@ -57,12 +57,12 @@ a:hover {
 	-khtml-opacity: 0.80;
 	opacity: 0.80;
 	}
-.element60 {
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
-	filter: alpha(opacity=60);
-	-moz-opacity: 0.60;
-	-khtml-opacity: 0.60;
-	opacity: 0.60;
+.element30 {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	filter: alpha(opacity=30);
+	-moz-opacity: 0.30;
+	-khtml-opacity: 0.30;
+	opacity: 0.30;
 	}
 	
 .logo-style {
@@ -75,7 +75,6 @@ a:hover {
 	margin: 0 auto 0 auto;
 	top:80px;
 	width:80%;
-	height:720px;
 	z-index: 4;
 }
 
@@ -167,12 +166,27 @@ a:hover {
 	position: fixed;
 }
 
+.bottom-logo-wr {
+	position: relative;
+	z-index: 3;
+	width:100%;
+	text-align:right;
+	display: table;
+	position: fixed;
+    bottom:16px;
+}
+
+.bottom-logo {
+	display:inline-block;
+    vertical-align: bottom;	
+}
+
 .footer {
 	background-color:#393A3E;
 	text-align:center;
 	line-height: 16px;
 	font-size: 13px;
-	z-index: 9999;
+	z-index: 2;
 	position: fixed;
     bottom:0;
 	left:0;

@@ -1,4 +1,3 @@
-<%@page import="by.gsu.epamlab.utils.Constants"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -48,6 +47,11 @@
 </c:if>
 </div>
 <!--end Content layer-->
+<div class="bottom-logo-wr">
+  <div class="bottom-logo">
+<img src="resources/img/bottom-logo.png" class="element30"/>
+  </div>
+</div>
 <!--start Footer-->
 <div class="footer">
 <%@include file="footer.jsp"%>
