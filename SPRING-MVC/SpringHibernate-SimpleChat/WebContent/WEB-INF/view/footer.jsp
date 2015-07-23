@@ -1,1 +1,0 @@
-<a href="https://github.com/spacemaster188" target="_blank">by Salai Vadzim &copy;</a>
