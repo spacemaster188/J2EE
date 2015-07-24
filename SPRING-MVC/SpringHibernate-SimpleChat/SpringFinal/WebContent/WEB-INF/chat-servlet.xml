@@ -63,10 +63,6 @@
         </property>
     </bean>
     
-<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-<property name="maxUploadSize" value="10000000"/>
-</bean>
-
     <bean id="messageDAO" class="by.gsu.epamlab.dao.MessageDaoImpl"></bean>
     <bean id="messageManager" class="by.gsu.epamlab.service.MessageManagerImpl"></bean>
     <bean id="userDAO" class="by.gsu.epamlab.dao.UserDaoImpl"></bean>
