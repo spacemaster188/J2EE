@@ -18,7 +18,9 @@
 </div>
 <!--end Header-->
 <!--start Content layer-->
-<div class="logo-style"><img src='resources/img/logo.png' title="Space chat" class="element90">
+<div class="logo-style"><img src='resources/img/logo.png' title="Space chat" class="element80">
+</div>
+<div class="polling-switch"><p>Pooling</p><img src='resources/img/short-polling.png' class="element90" id="polling-img" onClick="changePolling()">
 </div>
 <div class="content">
 <c:if test = "${!empty usr}">

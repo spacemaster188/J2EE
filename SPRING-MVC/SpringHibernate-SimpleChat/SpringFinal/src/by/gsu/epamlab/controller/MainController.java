@@ -1,6 +1,10 @@
 package by.gsu.epamlab.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import by.gsu.epamlab.entity.MessageEntity;
 import by.gsu.epamlab.entity.UserEntity;
+import by.gsu.epamlab.service.ChatRepository;
+import by.gsu.epamlab.service.InMemoryChatRepository;
 import by.gsu.epamlab.service.MessageManager;
 import by.gsu.epamlab.service.UserManager;
 import by.gsu.epamlab.utils.Constants;
@@ -27,6 +34,11 @@ public class MainController {
 	
 	@Autowired
 	private UserManager userManager;
+	
+	private final ChatRepository chatRepository = new InMemoryChatRepository();
+
+	private final Map<DeferredResult<List<String>>, Integer> chatRequests =
+			new ConcurrentHashMap<DeferredResult<List<String>>, Integer>();
 	
 	private ModelAndView modelAndView;
 	
@@ -41,14 +53,50 @@ public class MainController {
 	public String redirectRegister() {
 		return Constants.REGISTRATION;
 	}
+		        
+	@RequestMapping(value = "/listenMessageLong", method = RequestMethod.POST)
+	@ResponseBody
+	public DeferredResult<List<String>> getMessages(@RequestParam ("lastIncomingMessageLong") int messageIndex) {
+		System.out.println("Incoming index: " + messageIndex);
+		final DeferredResult<List<String>> deferredResult = new DeferredResult<List<String>>(null, Collections.emptyList());
+		this.chatRequests.put(deferredResult, messageIndex);
+
+		deferredResult.onCompletion(new Runnable() {
+			@Override
+			public void run() {
+				chatRequests.remove(deferredResult);
+			}
+		});
+
+		List<String> messages = this.chatRepository.getMessages(messageIndex);
+		if (!messages.isEmpty()) {
+			deferredResult.setResult(messages);
+		}
+
+		return deferredResult;
+	}
+
+	@RequestMapping(value = "/addMsgLong", method = RequestMethod.POST)
+	@ResponseBody
+	public void postMessage(@RequestParam ("json") String jsonStr) {
+		MessageEntity msg = new MessageEntity();
+		msg.setMsg(jsonStr);
+		messageManager.addMessage(msg,usr);
+		this.chatRepository.addMessage(jsonStr);
+		
+		for (Entry<DeferredResult<List<String>>, Integer> entry : this.chatRequests.entrySet()) {
+			List<String> messages = this.chatRepository.getMessages(entry.getValue());
+			entry.getKey().setResult(messages);
+		}
+	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/listenMessagesShort", method = RequestMethod.POST)
 	@ResponseBody
     public List<MessageEntity> getUpdatedMessages() {
         return messageManager.getAllMessages();
     }
 	
-	@RequestMapping(value = "/updateMsg", method = RequestMethod.POST)
+	@RequestMapping(value = "/addMsgShort", method = RequestMethod.POST)
 	@ResponseBody
 	public List<MessageEntity> saveNewMessage(@RequestParam ("json") String jsonStr) {
 		MessageEntity msg = new MessageEntity();

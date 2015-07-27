@@ -6,37 +6,82 @@ var messagesArea = document.getElementById('displayMessages');
 var sendMessagesForm = document.getElementById('sendMsgForm');
 var messagesField = document.getElementById('messageArea');
 var messagesStr = '';
+var isLongPolling = false;
+var isShortPolling = true;
+var int;
+var lastIncomingMessageLong = 0;
 
-sendAjaxQuery();
-var int = self.setInterval("sendAjaxQuery()", 1000);
+changePollingImg();
+startPolling();
 
-function sendAjaxQuery() {
+function startPolling() {
+	if(isLongPolling){
+		getNewMessagesLong();
+	}else{
+		getNewMessagesShort();
+		int = self.setInterval("getNewMessagesShort()", 1000);
+	}
+}
+
+var $request;
+
+function getNewMessagesLong() {
+		console.log('Long Fishing starts...');
+		var lastIncomingMessageLongJson = {"lastIncomingMessageLong":JSON.stringify(lastIncomingMessageLong)};
+		$request = $.ajax({
+			type: 'POST',
+			url: "listenMessageLong",
+			data: lastIncomingMessageLongJson,
+			dataType: 'json',
+			success: function(data) {
+				if(data.length != 0){
+					lastIncomingMessageLong = Number(lastIncomingMessageLong) + 1;
+					messagesArr.push(data);
+					var tmpLong = '<div class="msgCell"><span class="span-msg">' + data + '</span></div>';
+					messagesArea.innerHTML = messagesArea.innerHTML + tmpLong;
+					}
+				console.log('Long Fishing ends...');
+				}, complete: getNewMessagesLong})
+}
+
+function sendNewMessageLong() {
+	var newMsg = messagesField.value;
+	var jsonStr = {json:JSON.stringify(newMsg)};
+	$.ajax({
+		url: 'addMsgLong',
+		data: jsonStr,
+		type: 'POST',
+		dataType: 'json'
+	});
+	messagesField.value = '';
+}
+
+function getNewMessagesShort() {
+	console.log('Short Fishing starts...');
 			$.ajax({
-				url: 'update',
+				url: 'listenMessagesShort',
 				type: 'POST',
 				dataType: 'json',
 				success: function(data){
 					messagesArr = data;	
-					var tmp = '';
+					var tmpShort = '';
 				    for (var i = 0; i < messagesArr.length; i++) {
-				    	tmp += '<div class="msgCell"><span class="span-id"> UserId-' + messagesArr[i].usersId + ' : </span><span class="span-msg">' + messagesArr[i].msg + '</span></div>';
+				    	tmpShort += '<div class="msgCell"><span class="span-id"> UserId-' + messagesArr[i].usersId + ' : </span><span class="span-msg">' + messagesArr[i].msg + '</span></div>';
 				    }
-				    console.log('vipolnilsya metod');
-				    if(tmp != messagesStr){
-				    	 messagesArea.innerHTML = tmp;
-				    	 messagesStr = tmp;
-				    	 console.log(messagesArr.length);
+				    if(tmpShort != messagesStr){
+				    	 messagesArea.innerHTML = tmpShort;
+				    	 messagesStr = tmpShort;
 				    }
 				}
 			});
 }
 
-function sendNewMessage() {
+function sendNewMessageShort() {
 	var newMsg = messagesField.value;
 	console.log(newMsg);
 	var jsonStr = {json:JSON.stringify(newMsg)};
 	$.ajax({
-		url: 'updateMsg',
+		url: 'addMsgShort',
 		data: jsonStr,
 		type: 'POST',
 		dataType: 'json',
@@ -46,7 +91,6 @@ function sendNewMessage() {
 		    for (var i = 0; i < messagesArr.length; i++) {
 		    	tmp += '<div class="msgCell"><span class="span-id"> UserId-' + messagesArr[i].usersId + ' : </span><span class="span-msg">' + messagesArr[i].msg + '</span></div>';
 		    }
-		    console.log('vipolnilsya metod');
 		    if(tmp != messagesStr){
 		    	 messagesArea.innerHTML = tmp;
 		    	 messagesStr = tmp;
@@ -55,4 +99,41 @@ function sendNewMessage() {
 		}
 	});
 	messagesField.value = '';
+}
+
+function changePolling() {
+	if(isShortPolling){
+		clearInterval(int);
+		isLongPolling = true;
+		isShortPolling = false;
+		changePollingImg();
+		getNewMessagesLong();
+	}else{
+		isLongPolling = false;
+		isShortPolling = true;
+		changePollingImg();
+		int = self.setInterval("getNewMessagesShort()", 1000);
+		if ($request != null){ 
+		    $request.abort();
+		    $request = null;
+		}
+	}
+}
+
+function changePollingImg() {
+	if(isLongPolling){
+		var el = document.getElementById("polling-img");
+		el.src = "resources/img/long-polling.png";
+	}else{
+		var el = document.getElementById("polling-img");
+		el.src = "resources/img/short-polling.png";
+	}
+}
+
+function sendNewMessage() {
+	if(isLongPolling){
+		sendNewMessageLong();
+	}else{
+		sendNewMessageShort();
+	}
 }

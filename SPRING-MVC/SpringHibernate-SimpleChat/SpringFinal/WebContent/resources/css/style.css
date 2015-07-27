@@ -66,12 +66,26 @@ a:hover {
 	}
 	
 .logo-style {
+	float:left;
 	margin:55px 0 0 50px;
-	width:90%;
+	width:300px;
 	height:135px;
 	text-align:left;
 }
+
+.polling-switch {
+	float:right;
+	margin:55px 40px 0 0;
+	width:50%;
+	height:135px;
+	text-align:left;
+	font-family:fantasy;
+	font-size: 26px;
+	color: gray;
+}
+
 .content {
+	clear:both;
 	margin: 0 auto 0 auto;
 	top:80px;
 	width:80%;
