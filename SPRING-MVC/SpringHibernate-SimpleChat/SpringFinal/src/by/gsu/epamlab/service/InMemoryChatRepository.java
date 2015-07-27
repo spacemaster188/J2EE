@@ -15,7 +15,7 @@ public class InMemoryChatRepository implements ChatRepository {
 		if (this.messages.isEmpty()) {
 			return Collections.<String> emptyList();
 		}
-		Assert.isTrue((index >= 0) && (index <= this.messages.size()), "Invalid message index");
+        Assert.isTrue((index >= 0) && (index <= this.messages.size()), "Invalid message index");
 		return this.messages.subList(index, this.messages.size());
 	}
 

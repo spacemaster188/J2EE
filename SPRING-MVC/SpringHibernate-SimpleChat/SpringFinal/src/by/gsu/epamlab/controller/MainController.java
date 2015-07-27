@@ -79,6 +79,7 @@ public class MainController {
 	@RequestMapping(value = "/addMsgLong", method = RequestMethod.POST)
 	@ResponseBody
 	public void postMessage(@RequestParam ("json") String jsonStr) {
+		System.out.println(jsonStr);
 		MessageEntity msg = new MessageEntity();
 		msg.setMsg(jsonStr);
 		messageManager.addMessage(msg,usr);

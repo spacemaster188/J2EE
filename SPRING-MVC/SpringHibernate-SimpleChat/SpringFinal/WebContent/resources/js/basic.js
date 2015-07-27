@@ -41,7 +41,7 @@ function getNewMessagesLong() {
 					messagesArea.innerHTML = messagesArea.innerHTML + tmpLong;
 					}
 				console.log('Long Fishing ends...');
-				}, complete: getNewMessagesLong})
+				}, complete: getNewMessagesLong, timeout: 30000})
 }
 
 function sendNewMessageLong() {
@@ -63,10 +63,13 @@ function getNewMessagesShort() {
 				type: 'POST',
 				dataType: 'json',
 				success: function(data){
-					messagesArr = data;	
+					messagesArr = [];
+					for (var i = 0; i < data.length; i++) {
+						messagesArr.push(data[i].msg);
+				    }
 					var tmpShort = '';
 				    for (var i = 0; i < messagesArr.length; i++) {
-				    	tmpShort += '<div class="msgCell"><span class="span-id"> UserId-' + messagesArr[i].usersId + ' : </span><span class="span-msg">' + messagesArr[i].msg + '</span></div>';
+				    	tmpShort += '<div class="msgCell"><span class="span-msg">' + messagesArr[i] + '</span></div>';
 				    }
 				    if(tmpShort != messagesStr){
 				    	 messagesArea.innerHTML = tmpShort;
@@ -78,7 +81,6 @@ function getNewMessagesShort() {
 
 function sendNewMessageShort() {
 	var newMsg = messagesField.value;
-	console.log(newMsg);
 	var jsonStr = {json:JSON.stringify(newMsg)};
 	$.ajax({
 		url: 'addMsgShort',
@@ -86,19 +88,21 @@ function sendNewMessageShort() {
 		type: 'POST',
 		dataType: 'json',
 		success: function(data){
-			messagesArr = data;	
+			messagesArr = [];
+			for (var i = 0; i < data.length; i++) {
+				messagesArr.push(data[i].msg);
+		    }	
 			var tmp = '';
 		    for (var i = 0; i < messagesArr.length; i++) {
-		    	tmp += '<div class="msgCell"><span class="span-id"> UserId-' + messagesArr[i].usersId + ' : </span><span class="span-msg">' + messagesArr[i].msg + '</span></div>';
+		    	tmp += '<div class="msgCell"><span class="span-msg">' + messagesArr[i] + '</span></div>';
 		    }
 		    if(tmp != messagesStr){
 		    	 messagesArea.innerHTML = tmp;
 		    	 messagesStr = tmp;
-		    	 console.log(messagesArr.length);
 		    }
 		}
 	});
-	messagesField.value = '';
+	messagesField.value = ' ';
 }
 
 function changePolling() {
