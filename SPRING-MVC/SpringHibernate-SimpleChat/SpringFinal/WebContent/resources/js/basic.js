@@ -40,7 +40,7 @@ function getNewMessagesLong() {
 				if(data.length != 0){
 					lastIncomingMessageLong = Number(lastIncomingMessageLong) + 1;
 					messagesArr.push(data[0]);
-					var tmpLong = '<p class="msgCell"><span class="span-msg">' + data[0].msg + '</span></p>';
+					var tmpLong = '<p class="msgCell"><span class="span-id">UserID:' + data[0].usersId + '</span><span class="span-msg"> ' + data[0].msg + '</span></p>';
 					messagesArea.innerHTML = messagesArea.innerHTML + tmpLong;
 					$('#displayMessages').animate({scrollTop: $('#displayMessages')[0].scrollHeight});
 					}
@@ -75,7 +75,7 @@ function getNewMessagesShort() {
 						messagesArr = data;
 						var tmpShort = '';
 					    for (var i = 0; i < messagesArr.length; i++) {
-					    	tmpShort += '<p class="msgCell"><span class="span-msg">' + messagesArr[i].msg + '</span></p>';
+					    	tmpShort += '<p class="msgCell"><span class="span-id">UserID:' + messagesArr[i].usersId + '</span><span class="span-msg"> ' + messagesArr[i].msg + '</span></p>';
 					    }
 					    if(tmpShort != messagesStr){
 					    	 messagesArea.innerHTML = tmpShort;
@@ -102,7 +102,7 @@ function sendNewMessageShort() {
 				messagesArr = data;
 				var tmp = '';
 			    for (var i = 0; i < messagesArr.length; i++) {
-			    	tmp += '<p class="msgCell"><span class="span-msg">' + messagesArr[i].msg + '</span></p>';
+			    	tmp += '<p class="msgCell"><span class="span-id">UserID:' + messagesArr[i].usersId + '</span><span class="span-msg"> ' + messagesArr[i].msg + '</span></p>';
 			    }
 			    if(tmp != messagesStr){
 			    	 messagesArea.innerHTML = tmp;
