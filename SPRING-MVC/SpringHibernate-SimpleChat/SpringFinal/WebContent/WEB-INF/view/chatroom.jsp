@@ -20,7 +20,7 @@
 <!--start Content layer-->
 <div class="logo-style"><img src='resources/img/logo.png' title="Space chat" class="element80">
 </div>
-<div class="polling-switch"><p>Pooling</p><img src='resources/img/short-polling.png' class="element90" id="polling-img" onClick="changePolling()">
+<div class="polling-switch"><p><img src='resources/img/fishing-start-empty.png' class="element90" id="fishing-start">Pooling<img src='resources/img/fishing-end-empty.png' class="element90" id="fishing-end"></p><img src='resources/img/short-polling.png' class="element90" id="polling-img" onClick="changePolling()">
 </div>
 <div class="content">
 <c:if test = "${!empty usr}">

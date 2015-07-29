@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import by.gsu.epamlab.entity.MessageEntity;
 import by.gsu.epamlab.entity.UserEntity;
-import by.gsu.epamlab.service.ChatRepository;
 import by.gsu.epamlab.service.InMemoryChatRepository;
 import by.gsu.epamlab.service.MessageManager;
 import by.gsu.epamlab.service.UserManager;
@@ -34,11 +34,11 @@ public class MainController {
 	
 	@Autowired
 	private UserManager userManager;
-	
-	private final ChatRepository chatRepository = new InMemoryChatRepository();
-
-	private final Map<DeferredResult<List<String>>, Integer> chatRequests =
-			new ConcurrentHashMap<DeferredResult<List<String>>, Integer>();
+	/** Message service messages List*/
+	private List<MessageEntity> messages;
+	/** Message service chatRequests*/
+	private final Map<DeferredResult<List<MessageEntity>>, Integer> chatRequests =
+			new ConcurrentHashMap<DeferredResult<List<MessageEntity>>, Integer>();
 	
 	private ModelAndView modelAndView;
 	
@@ -56,24 +56,24 @@ public class MainController {
 		        
 	@RequestMapping(value = "/listenMessageLong", method = RequestMethod.POST)
 	@ResponseBody
-	public DeferredResult<List<String>> getMessages(@RequestParam ("lastIncomingMessageLong") int messageIndex) {
+	public DeferredResult<List<MessageEntity>> serviceWaitingClientMessages(@RequestParam ("lastIncomingMessageLong") int messageIndex) {
 		System.out.println("Incoming index: " + messageIndex);
-		final DeferredResult<List<String>> deferredResult = new DeferredResult<List<String>>(null, Collections.emptyList());
-		this.chatRequests.put(deferredResult, messageIndex);
+		final DeferredResult<List<MessageEntity>> chatRequest = new DeferredResult<List<MessageEntity>>(null, Collections.emptyList());
+		this.chatRequests.put(chatRequest, messageIndex);
 
-		deferredResult.onCompletion(new Runnable() {
+		chatRequest.onCompletion(new Runnable() {
 			@Override
 			public void run() {
-				chatRequests.remove(deferredResult);
+				chatRequests.remove(chatRequest);
 			}
 		});
 
-		List<String> messages = this.chatRepository.getMessages(messageIndex);
-		if (!messages.isEmpty()) {
-			deferredResult.setResult(messages);
+		List<MessageEntity> messagesTmpLst = getMessages(messageIndex);
+		if (!messagesTmpLst.isEmpty()) {
+			chatRequest.setResult(messagesTmpLst);
 		}
 
-		return deferredResult;
+		return chatRequest;
 	}
 
 	@RequestMapping(value = "/addMsgLong", method = RequestMethod.POST)
@@ -83,11 +83,11 @@ public class MainController {
 		MessageEntity msg = new MessageEntity();
 		msg.setMsg(jsonStr);
 		messageManager.addMessage(msg,usr);
-		this.chatRepository.addMessage(jsonStr);
+		addMessage(msg);
 		
-		for (Entry<DeferredResult<List<String>>, Integer> entry : this.chatRequests.entrySet()) {
-			List<String> messages = this.chatRepository.getMessages(entry.getValue());
-			entry.getKey().setResult(messages);
+		for (Entry<DeferredResult<List<MessageEntity>>, Integer> entry : this.chatRequests.entrySet()) {
+			List<MessageEntity> messagesTmp = getMessages(entry.getValue());
+			entry.getKey().setResult(messagesTmp);
 		}
 	}
 	
@@ -130,7 +130,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addMessage(@RequestParam("msg") String message) {
+	public String addNewMessage(@RequestParam("msg") String message) {
 		MessageEntity msg = new MessageEntity();
 		msg.setMsg(message);
 		System.out.println(message);
@@ -175,8 +175,21 @@ public class MainController {
 	}
 
 	public MainController() {
+		this.messages = InMemoryChatRepository.messages;
 		this.modelAndView = new ModelAndView();
 		this.usr = new UserEntity();
+	}
+	/** Message service get messages*/
+	public List<MessageEntity> getMessages(int index) {
+		if (this.messages.isEmpty()) {
+			return Collections.<MessageEntity> emptyList();
+		}
+        Assert.isTrue((index >= 0) && (index <= this.messages.size()), "Invalid message index");
+		return this.messages.subList(index, this.messages.size());
+	}
+	/** Message service add new message*/
+	public void addMessage(MessageEntity message) {
+		this.messages.add(message);
 	}
 	
 }

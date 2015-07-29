@@ -11,6 +11,7 @@ var isShortPolling = true;
 var int;
 var lastIncomingMessageLong = 0;
 
+$('#displayMessages').animate({scrollTop: $('#displayMessages')[0].scrollHeight});
 changePollingImg();
 startPolling();
 
@@ -27,21 +28,27 @@ var $request;
 
 function getNewMessagesLong() {
 		console.log('Long Fishing starts...');
+		pollingFishingStarts();
 		var lastIncomingMessageLongJson = {"lastIncomingMessageLong":JSON.stringify(lastIncomingMessageLong)};
-		$request = $.ajax({
+        $request = $.ajax({
 			type: 'POST',
 			url: "listenMessageLong",
 			data: lastIncomingMessageLongJson,
 			dataType: 'json',
 			success: function(data) {
+				console.log('Long Fishing ends...');
 				if(data.length != 0){
 					lastIncomingMessageLong = Number(lastIncomingMessageLong) + 1;
-					messagesArr.push(data);
-					var tmpLong = '<div class="msgCell"><span class="span-msg">' + data + '</span></div>';
+					messagesArr.push(data[0]);
+					var tmpLong = '<p class="msgCell"><span class="span-msg">' + data[0].msg + '</span></p>';
 					messagesArea.innerHTML = messagesArea.innerHTML + tmpLong;
+					$('#displayMessages').animate({scrollTop: $('#displayMessages')[0].scrollHeight});
 					}
-				console.log('Long Fishing ends...');
-				}, complete: getNewMessagesLong, timeout: 30000})
+				}, complete: function() {
+		            getNewMessagesLong();
+		            pollingFishingEnds();
+		            pollingFishingStarts();
+		        }})
 }
 
 function sendNewMessageLong() {
@@ -58,23 +65,26 @@ function sendNewMessageLong() {
 
 function getNewMessagesShort() {
 	console.log('Short Fishing starts...');
+	pollingFishingStarts();
 			$.ajax({
 				url: 'listenMessagesShort',
 				type: 'POST',
 				dataType: 'json',
 				success: function(data){
-					messagesArr = [];
-					for (var i = 0; i < data.length; i++) {
-						messagesArr.push(data[i].msg);
-				    }
-					var tmpShort = '';
-				    for (var i = 0; i < messagesArr.length; i++) {
-				    	tmpShort += '<div class="msgCell"><span class="span-msg">' + messagesArr[i] + '</span></div>';
-				    }
-				    if(tmpShort != messagesStr){
-				    	 messagesArea.innerHTML = tmpShort;
-				    	 messagesStr = tmpShort;
-				    }
+					if(data.length != 0){
+						messagesArr = data;
+						var tmpShort = '';
+					    for (var i = 0; i < messagesArr.length; i++) {
+					    	tmpShort += '<p class="msgCell"><span class="span-msg">' + messagesArr[i].msg + '</span></p>';
+					    }
+					    if(tmpShort != messagesStr){
+					    	 messagesArea.innerHTML = tmpShort;
+					    	 $('#displayMessages').animate({scrollTop: $('#displayMessages')[0].scrollHeight});
+					    	 messagesStr = tmpShort;
+					    }	
+					}	
+				    console.log('Short Fishing ends...');
+					pollingFishingEnds();
 				}
 			});
 }
@@ -88,18 +98,18 @@ function sendNewMessageShort() {
 		type: 'POST',
 		dataType: 'json',
 		success: function(data){
-			messagesArr = [];
-			for (var i = 0; i < data.length; i++) {
-				messagesArr.push(data[i].msg);
-		    }	
-			var tmp = '';
-		    for (var i = 0; i < messagesArr.length; i++) {
-		    	tmp += '<div class="msgCell"><span class="span-msg">' + messagesArr[i] + '</span></div>';
-		    }
-		    if(tmp != messagesStr){
-		    	 messagesArea.innerHTML = tmp;
-		    	 messagesStr = tmp;
-		    }
+			if(data.length != 0){
+				messagesArr = data;
+				var tmp = '';
+			    for (var i = 0; i < messagesArr.length; i++) {
+			    	tmp += '<p class="msgCell"><span class="span-msg">' + messagesArr[i].msg + '</span></p>';
+			    }
+			    if(tmp != messagesStr){
+			    	 messagesArea.innerHTML = tmp;
+			    	 $('#displayMessages').animate({scrollTop: $('#displayMessages')[0].scrollHeight});
+			    	 messagesStr = tmp;
+			    }	
+			}
 		}
 	});
 	messagesField.value = ' ';
@@ -140,4 +150,14 @@ function sendNewMessage() {
 	}else{
 		sendNewMessageShort();
 	}
+}
+
+function pollingFishingStarts() {
+	document.getElementById("fishing-start").src = "resources/img/fishing-start.png";
+	document.getElementById("fishing-end").src = "resources/img/fishing-end-empty.png";
+}
+
+function pollingFishingEnds() {
+	document.getElementById("fishing-end").src = "resources/img/fishing-end.png";
+	document.getElementById("fishing-start").src = "resources/img/fishing-start-empty.png";
 }
