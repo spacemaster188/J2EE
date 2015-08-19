@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; UTF-8">
-	<title> Personal tasks helper </title>
+	<title><spring:message code="label.chatRoomTitle" /></title>
 	<meta name="keywords" content="J2EE SpringMVC, jQuery, AJAX, chat" />
 	<script src="resources/js/jquery-1.9.1.js"></script>
     <link rel="stylesheet" href="resources/css/style.css"/>
@@ -20,7 +20,7 @@
 <!--start Content layer-->
 <div class="logo-style"><img src='resources/img/logo.png' title="Space chat" class="element80">
 </div>
-<div class="polling-switch"><p><img src='resources/img/fishing-start-empty.png' class="element90" id="fishing-start">Pooling<img src='resources/img/fishing-end-empty.png' class="element90" id="fishing-end"></p><img src='resources/img/short-polling.png' class="element90" id="polling-img" onClick="changePolling()">
+<div class="polling-switch"><p><img src='resources/img/fishing-start-empty.png' class="element90" id="fishing-start"><spring:message code="label.fishing" /><img src='resources/img/fishing-end-empty.png' class="element90" id="fishing-end"></p><img src='resources/img/short-polling.png' class="element90" id="polling-img" onClick="changePolling()">
 </div>
 <div class="content">
 <c:if test = "${!empty usr}">

@@ -6,25 +6,25 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; UTF-8">
-    <title> Spring Chatroom Login page </title>
+    <title><spring:message code="label.loginTitle" /></title>
     <link rel="stylesheet" href="resources/css/login.css"/>
 </head>
 <body>
 
 <form:form commandName="users" id="loginForm" action="getLogin" method="POST">
     <div class="field">
-        <label>Login:</label>
+        <label><spring:message code="label.loginDot" /></label>
         <div class="input"><input type="text" name="login" value="" id="login" /></div>
     </div>
 
     <div class="field">
-    <a href="register" >have no login?</a>
-         <label>Password:</label>
+    <a href="register" ><spring:message code="label.haveNoLogin" /></a>
+         <label><spring:message code="label.passwordDot" /></label>
         <div class="input"><input type="password" name="password" value="" id="pass" /></div>
     </div>
 
     <div class="submit">
-        <button type="submit">LogIn</button>
+        <button type="submit"><spring:message code="label.login" /></button>
     </div>
 </form:form>
 

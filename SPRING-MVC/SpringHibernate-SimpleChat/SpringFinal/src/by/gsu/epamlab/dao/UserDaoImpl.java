@@ -25,8 +25,8 @@ public class UserDaoImpl implements UserDAO {
 	}
 	@Override
 	public boolean hasLogin(UserEntity usr) {
-	    if(this.sessionFactory.getCurrentSession().createQuery("from UserEntity WHERE login='"+usr.getLogin()+"' AND password='"+usr.getPassword()+"' ").list().size()!=0){
-			return true;	
+	if(this.sessionFactory.getCurrentSession().createQuery("from UserEntity WHERE login='"+usr.getLogin()+"' AND password='"+usr.getPassword()+"' ").list().size()!=0){
+			return true;
 		}
 		return false;
 	}

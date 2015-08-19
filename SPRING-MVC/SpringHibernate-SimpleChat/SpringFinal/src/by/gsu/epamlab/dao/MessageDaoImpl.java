@@ -1,8 +1,6 @@
 package by.gsu.epamlab.dao;
 
 import java.util.List;
-import javax.servlet.ServletContext;
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,8 +9,6 @@ import by.gsu.epamlab.entity.UserEntity;
 
 @Repository
 public class MessageDaoImpl implements MessageDAO  {
-	@Autowired
-    ServletContext context; 
 	
 	@Autowired
     private SessionFactory sessionFactory;

@@ -6,37 +6,37 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; UTF-8">
-    <title> Spring Chatroom Registration page </title>
+    <title><spring:message code="label.registerTitle" /></title>
     <link rel="stylesheet" href="resources/css/login.css"/>
 </head>
 <body>
 
 <form:form commandName="users" method="POST" action="getRegister" id="registrationForm">
 <div class="field">
-        <label>Login*</label>
+        <label><spring:message code="label.loginDot" /></label>
         <div class="input"><input type="text" name="login" value="" id="login" /></div>
 </div>
 <div class="field">
-        <label>Password*</label>
+        <label><spring:message code="label.passwordDot" /></label>
         <div class="input"><input type="text" name="password" value="" id="password" /></div>
 </div>
 <div class="field">
-        <label>email</label>
+        <label><spring:message code="label.email" /></label>
         <div class="input"><input type="text" name="email" value="" id="email" /></div>
 </div>
 <div class="field">
-        <label>firstname</label>
+        <label><spring:message code="label.firstname" /></label>
         <div class="input"><input type="text" name="firstname" value="" id="firstname" /></div>
 </div>
 <div class="field">
-        <label>lastname</label>
+        <label><spring:message code="label.lastname" /></label>
         <div class="input"><input type="text" name="lastname" value="" id="lastname" /></div>
 </div>
-
+<br>
 <div class="submit">
-        <button type="submit">Register</button>
+        <button type="submit"><spring:message code="label.rerister" /></button>
     </div>
-<a href="login" >go to login page</a>
+<a href="login" ><spring:message code="label.goToLoginPage" /></a><br>
 </form:form>
 
 </body>
