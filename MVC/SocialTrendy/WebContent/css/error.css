@@ -1,0 +1,137 @@
+html, body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: url("/images/bg-blue.png") repeat scroll 0 0 transparent;
+  font-family: "Courier New", Courier;
+  text-align: center;
+}
+
+.wrapper.error {
+  min-height: 100%;
+  background: url("/images/bg-error-page.png") no-repeat scroll center 130px transparent;
+}
+
+.wrapper.error.p404 {
+  background: url("/images/img/bg-404-page.png") no-repeat scroll center 130px transparent;
+}
+
+.wrapper.error h1 {
+  margin: 0;
+  padding: 34px 0 0 0;
+}
+
+.wrapper.error h1 a{
+  font-size: 35px;
+  color: #0060af;
+  text-decoration: none;
+}
+
+.wrapper.error h3{
+  color: #005092;
+  font-size: 13px;
+  font-weight: normal;
+  margin-top: 8px;
+}
+
+.wrapper.error h4 {
+  margin: 0;
+  padding: 18px 0 0 0;
+  line-height: 14px;
+}
+
+.wrapper.error .dev-line{
+  color: #fff;
+  font-size: 19px;
+  background-color: #0060af;
+  line-height: 50px;
+  margin-top: 168px;
+}
+
+.wrapper.error .dev-line a{
+  color: #a7d7ff;
+  font-weight: bold;
+}
+
+.wrapper.error .dev-line a:hover{
+  text-decoration: none;
+}
+
+.wrapper.error.p404 .dev-line{
+  margin-top: 55px;
+}
+
+.wrapper.error a.dev-logo {
+  background: url("/images/devlogo.png") no-repeat scroll 0 0 transparent;
+  height: 45px;
+  width: 135px;
+  display: inline-block;
+  text-indent: -9999px;
+  margin-top: 200px;
+}
+
+.wrapper.error.p404 a.dev-logo {
+  margin-top: 100px;
+}
+
+.wrapper.error.p404 .dev-search {
+  margin: 65px 0 0 0;
+}
+
+.wrapper.error.p404 span {
+  color: #fff;
+  font-size: 13px;
+  display: block;
+}
+
+.wrapper.error.p404 .dev-menu {
+  margin-top: 42px;
+}
+
+.wrapper.error.p404 .dev-menu ul {
+  overflow: hidden;
+  display: block;
+  margin: 12px auto 0;
+  width: 500px;
+  padding: 0;
+}
+
+.wrapper.error.p404 .dev-menu ul li {
+  float: left;
+  margin: 0 26px 0 0;
+  list-style: none;
+}
+
+.wrapper.error.p404 .dev-menu ul a {
+  color: #0060af;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.wrapper.error.p404 .dev-menu ul a:hover{
+  text-decoration: none;
+}
+
+.wrapper.error.p404 .dev-search form{
+  margin: 18px 0 0 0;
+}
+
+.wrapper.error.p404 .dev-search input {
+  display: inline-block;
+  width: 210px;
+  height: 18px;
+  font-size: 13px;
+  line-height: 18px;
+  color: gray;
+  border: 1px solid #bfd2e1;
+  padding: 3px 9px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 -1px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -1px 0px rgba(0, 0, 0, 0.2);
+  transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+  font-family: "Courier New", Courier;
+}
