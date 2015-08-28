@@ -84,7 +84,10 @@
     <servlet-name>FileUploadServlet</servlet-name>
     <url-pattern>/file_upload.do</url-pattern>
   </servlet-mapping>
-    <filter>
+  <session-config>
+        <session-timeout>60</session-timeout>
+  </session-config>
+  <filter>
     <filter-name>AuthorizeFilter</filter-name>
     <filter-class>com.belhard.filters.AuthorizeFilter</filter-class>
   </filter>

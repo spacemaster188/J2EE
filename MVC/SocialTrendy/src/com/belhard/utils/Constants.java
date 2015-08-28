@@ -53,6 +53,8 @@ public class Constants {
 	public static final String USER_INIT_FAIL = "User initialization (cookies/session) FAIL ..";
 	public static final String UPLOAD_SUCCESS = "File upload success ..";
 	public static final String UPLOAD_FAILED = "File upload failed ..";
+	public static final String USER_FROM_COOKIES = "Getting user from cookies";
+	public static final String USER_FROM_SESSION = "Getting user from session";
 	public static final String REPORT = "report";
 	public static final String TRUE = "true";
 	public static final String DEFAULT_PIC = "default.png";

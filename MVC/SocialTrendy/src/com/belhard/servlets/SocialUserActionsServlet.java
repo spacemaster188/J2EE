@@ -10,16 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import com.belhard.beans.SocialBean;
 import com.belhard.dao.DaoException;
 import com.belhard.services.SocialCheckLogonService;
 import com.belhard.services.SocialListsService;
 import com.belhard.services.SocialLoginService;
-import com.belhard.services.SocialUsersService;
 import com.belhard.utils.Constants;
-import com.belhard.utils.StringUtils;
 
 public class SocialUserActionsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

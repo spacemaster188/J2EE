@@ -37,15 +37,15 @@ public class AuthorizeFilter implements Filter {
 		            	user = (SocialBean)session.getAttribute(Constants.USR);
 		            }catch (Exception e) {
 			        }   
-		            if(user != null){
+		            if(user != null) {
 		            	if(user.isActive()){
 		            		filterChain.doFilter(request, response);
 		            		return;
-		            	}else{
+		            	}else {
 		            		httpResponse.sendRedirect(Constants.INACTIVE_PAGE);
 		            		return;
 		            	}
-		            }else{
+		            } else {
 		            	if (httpRequest.getCookies().length != 0) {                 //chk cookies 4 usr
 			                Cookie[] dataSaved = httpRequest.getCookies();
 			                boolean login = false;

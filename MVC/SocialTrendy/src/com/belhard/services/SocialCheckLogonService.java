@@ -40,6 +40,7 @@ public class SocialCheckLogonService {
 				if (login && passw) {
                    SocialBean user = SocialLoginService.checkLoginUser(cookiemail, cookiepass);
 					if (user != null) {
+						System.out.println(Constants.USER_FROM_COOKIES);
 						if (user.isActive()) {
 							return user.getId();
 						} else {
@@ -49,12 +50,14 @@ public class SocialCheckLogonService {
 				} else {                                                      // if have no cookies
 					int out = getUserFromSession(session);
 					if(out >= 0) {
+						System.out.println(Constants.USER_FROM_SESSION);
 						return out;
 					}			
 				}
 			} else {                                                          // if have no cookies
 				int out = getUserFromSession(session);
 				if(out >= 0) {
+					System.out.println(Constants.USER_FROM_SESSION);
 					return out;
 				}
 			}

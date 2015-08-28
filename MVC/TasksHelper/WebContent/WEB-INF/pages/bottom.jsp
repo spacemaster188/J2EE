@@ -1,0 +1,1 @@
+<div class="vladmaxi-bottom"><a href="mailto:limitvadim@ya.ru">by Salai Vadzim &copy;</a></div>

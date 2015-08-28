@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" version="2.1">
+	<description>My Custom Tags</description>
+	<display-name>My Custom Tags</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>date</short-name>
+	<uri>http://javacore.jvmhost.net</uri>
+	
+	<tag>
+	<description>Tag show date in custom format</description>
+	<name>show</name>
+	<tag-class>by.gsu.epamlab.tags.DateTag</tag-class>
+	<body-content>empty</body-content>
+	<attribute>
+	<name>when</name>
+	<required>true</required>
+	</attribute>
+	</tag>	
+</taglib>
