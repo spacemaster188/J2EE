@@ -32,13 +32,14 @@ public class AuthorizeFilter implements Filter {
 		  HttpServletResponse httpResponse = (HttpServletResponse) response;
 		  HttpServletRequest httpRequest = (HttpServletRequest) request;
 		  try {
-			     SocialBean user = null;                                            //chk session 4 usr   
+			     SocialBean user = null;                                            //check user from session
 		            try{
 		            	user = (SocialBean)session.getAttribute(Constants.USR);
 		            }catch (Exception e) {
 			        }   
 		            if(user != null) {
-		            	if(user.isActive()){
+		            	if(user.isActive()) {
+							session.setAttribute(Constants.USR, user);
 		            		filterChain.doFilter(request, response);
 		            		return;
 		            	}else {
@@ -46,7 +47,7 @@ public class AuthorizeFilter implements Filter {
 		            		return;
 		            	}
 		            } else {
-		            	if (httpRequest.getCookies().length != 0) {                 //chk cookies 4 usr
+		            	if (httpRequest.getCookies().length != 0) {                 //check user from cookies
 			                Cookie[] dataSaved = httpRequest.getCookies();
 			                boolean login = false;
 			                boolean	passw = false;
@@ -66,9 +67,9 @@ public class AuthorizeFilter implements Filter {
 			                }            
 			                if (login && passw) { 	
 			                	user = SocialLoginService.checkLoginUser(cookiemail, cookiepass);
-			                	if(user!=null){
+			                	if(user != null) {
 			                		session.setAttribute(Constants.USR, user);
-			                		if(user.isActive()){		
+			                		if(user.isActive()) {
 			                			filterChain.doFilter(request, response);	
 			                			return;
 			                		}else{

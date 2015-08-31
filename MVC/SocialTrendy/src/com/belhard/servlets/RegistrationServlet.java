@@ -22,7 +22,7 @@ public class RegistrationServlet extends HttpServlet {
     
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding(Constants.UTF8);
 		HttpSession session = request.getSession();
 		
 		String email = request.getParameter(Constants.E_MAIL);
@@ -35,10 +35,10 @@ public class RegistrationServlet extends HttpServlet {
 		StringUtils.getSafe(lastname);
 		StringUtils.getSafe(gender);
 		
-	    if(StringUtils.checked(email) && StringUtils.checked(pass)){
+	    if(StringUtils.checked(email) && StringUtils.checked(pass)) {
 	    	try {
 		    	SocialBean registeredUser = SocialLoginService.RegisterUser(firstname, lastname, email, pass, country, gender);
-		    	if(registeredUser==null){
+		    	if(registeredUser == null) {
 		    		DaoException.jump(request, response, Constants.USER_EXISTS);
 		    	}else{
 			    	session.setAttribute(Constants.USR, registeredUser);

@@ -101,9 +101,13 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>AuthorizeFilter</filter-name>
+    <servlet-name>UserAction</servlet-name>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AuthorizeFilter</filter-name>
     <servlet-name>LogoutServlet</servlet-name>
   </filter-mapping>
-   <error-page>
+  <error-page>
   		<error-code>404</error-code>
   		<location>/WEB-INF/pages/err404.jsp</location>
   </error-page>

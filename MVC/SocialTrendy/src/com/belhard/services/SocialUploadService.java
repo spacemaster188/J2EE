@@ -83,16 +83,14 @@ public class SocialUploadService {
     	String finalPictureStr;
     	IPictureDAO pictureDAO = SocialFactory.getPictureFromFactory();
     	String getPicturesStr = pictureDAO.getPicturesById(idUser);
-    	
     	finalPictureStr = getPicturesStr + Constants.TWODOTS + pictureStr;
-    	
     	pictureDAO.setPicturesById(idUser, finalPictureStr);
 	}
     
     public static void setMainPicture(int idUser, String mainPicStr) throws UnsupportedEncodingException, DaoException {
     	IPictureDAO pictureDAO = SocialFactory.getPictureFromFactory();
     	String getPicturesStr = pictureDAO.getPicturesById(idUser);
-    	String finalPicturesStr = getPicturesStr;
+    	String finalPicturesStr = Constants.EMPTY_STR;
     	if(getPicturesStr.equals(Constants.DEFAULT_PIC)){
     		finalPicturesStr = mainPicStr;
     	}else{
