@@ -16,7 +16,9 @@ import com.belhard.beans.SocialBean;
 import com.belhard.dao.DaoException;
 import com.belhard.services.SocialListsService;
 import com.belhard.services.SocialLoginService;
+import com.belhard.services.SocialUsersService;
 import com.belhard.utils.Constants;
+import com.belhard.utils.StringUtils;
 
 public class SocialUserActionsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -55,7 +57,8 @@ public class SocialUserActionsServlet extends HttpServlet {
 		try {
 	        user = (SocialBean)session.getAttribute(Constants.USR);
 		} catch (Exception e) {
-			DaoException.jump(request, response, Constants.NO_USER_IN_SESSION);
+			logger.error(Constants.NO_USER_IN_SESSION);
+			response.sendRedirect(Constants.LOGIN_PAGE);
 			return;
 		}
     		int currentId = user.getId();
@@ -159,51 +162,42 @@ public class SocialUserActionsServlet extends HttpServlet {
     					int id = Integer.parseInt(request.getParameter("hdn_removed_product"));
     					SocialUserService.addFriend(currentId, id, request);
     					break;
-    				}
+    				}*/
     				case "send_message": {
     					int id = Integer.parseInt(msg_id);
     					String message = request.getParameter("message");
-    					SocialUserService.sendMessage(currentId, id, message, request);
+    					SocialUsersService.sendMessage(currentId, id, message, request);
     					if(msg_flag!=null){
-    						List<SocialBean> in_msgs_List = SocialUserService.getInMsgsBeanList(currentId);
+    						List<SocialBean> in_msgs_List = SocialUsersService.getInMsgsBeanList(currentId);
     						session.setAttribute("in_message_list", in_msgs_List);
-    						List<SocialBean> out_msgs_List = SocialUserService.getOutMsgsBeanList(currentId);
+    						List<SocialBean> out_msgs_List = SocialUsersService.getOutMsgsBeanList(currentId);
     						session.setAttribute("out_message_list", out_msgs_List);	
     					}
     					break;
     				}
     				case "msgs_show": {
-    					List<SocialBean> in_msgs_List = SocialUserService.getInMsgsBeanList(currentId);
+    					List<SocialBean> in_msgs_List = SocialUsersService.getInMsgsBeanList(currentId);
     					session.setAttribute("in_message_list", in_msgs_List);
-    					List<SocialBean> out_msgs_List = SocialUserService.getOutMsgsBeanList(currentId);
+    					List<SocialBean> out_msgs_List = SocialUsersService.getOutMsgsBeanList(currentId);
     					session.setAttribute("out_message_list", out_msgs_List);
     					break;
-    				}*/
+    				}
     				case "show_pics": {
     					List<SocialBean> picsList = SocialListsService.getPicturesList(outBean);
     					session.setAttribute("pictures_list", picsList);
     					break;
     				}
     				}
-    /*				if(StringUtils.isStrPassed(keyword)){
-    					List<SocialBean> searchList = SocialUserService.getSearchList4Users(keyword, currentId);
+				if(StringUtils.isStrPassed(keyword)) {
+    					List<SocialBean> searchList = SocialUsersService.getSearchList4Users(keyword, currentId);
     					session.setAttribute("search_list", searchList);
     					session.setAttribute("search_key", keyword);
     				}
-    				List<SocialBean> newsList = SocialUserService.getNewsBeanList(currentId);
-    				session.setAttribute("news_list", newsList);
-    				List<SocialBean> friendsList = SocialUserService.getFriendsStripPics(currentId);
-    				session.setAttribute("friends_list", friendsList);
-    				List<SocialBean> lastMsgsList = SocialUserService.getLastMessages(currentId);
-    				session.setAttribute("last_message_list", lastMsgsList);
-    				String musList = SocialUserService.getMusic(currentId);
-    				session.setAttribute("mus_list", musList);*/
     				RequestDispatcher dispatcher = request.getRequestDispatcher(Constants.GET_LISTS_SERVLET);
     				dispatcher.forward(request, response);
     			}
     		} catch (DaoException e) {
     			DaoException.jump(request, response, Constants.DAO_ERR);
     		}
-
 	}
 }

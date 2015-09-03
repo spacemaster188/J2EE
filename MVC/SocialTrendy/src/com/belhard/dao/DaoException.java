@@ -2,6 +2,8 @@ package com.belhard.dao;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,10 +19,12 @@ public class DaoException extends Exception {
 	public DaoException() {
 	}
 
-	public static void jump(HttpServletRequest request, HttpServletResponse response, String msg) throws IOException{
+	public static void jump(HttpServletRequest request, HttpServletResponse response, String msg) throws IOException, ServletException{
 		HttpSession session = request.getSession();
 		logger.error(msg);
 		session.setAttribute(Constants.ERROR, msg);
-		response.sendRedirect(Constants.ERROR_PAGE);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(Constants.ERROR_PAGE);
+		dispatcher.forward(request, response);
+		//response.sendRedirect(Constants.ERROR_PAGE);
 	}
 }

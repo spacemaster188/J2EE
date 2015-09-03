@@ -23,9 +23,8 @@
 $jq(window).load(function(){
 	$jq('.str3').liMarquee();
 });
-</script> 
+</script>
 <script type="text/javascript" src="js/scripts.js"></script>
-<script type="text/javascript" src="js/someJs.js"></script>
 <script type="text/javascript" src="js/menu1.js"></script>
 <script type="text/javascript" src="js/menu2.js"></script>
 <script type="text/javascript" src="js/menu3.js"></script>
@@ -181,9 +180,9 @@ data-config="{'skin':'http://static.tumblr.com/mky4cgu/RFrmbhpc1/simplesazulfals
         <div id="content">
 	    <div class="post inactive">
 		<div class="title">
-			<img src='images/message.png' alt="view" title="Send message"></a>
+			<img src='images/message.png' alt="view" title="Send message">
 		</div>
-		<div class="entry" style="display:none;">
+		<div class="entry" style="display:none">
 			<form method="post" action="user_action.do">
             <input type="hidden" name="hdn_action_type" value='send_message' />
             <input type="hidden" name="hdn_message_id" value='<c:out value="${in_m_list.id}" />' />
@@ -233,9 +232,9 @@ data-config="{'skin':'http://static.tumblr.com/mky4cgu/RFrmbhpc1/simplesazulfals
         <div id="content">
 	    <div class="post inactive">
 		<div class="title">
-			<img src='images/message.png' alt="view" title="Send message"></a>
+			<img src='images/message.png' alt="view" title="Send message">
 		</div>
-		<div class="entry" style="display:none;">
+		<div class="entry" style="display:none">
 			<form method="post" action="user_action.do">
             <input type="hidden" name="hdn_action_type" value='send_message' />
             <input type="hidden" name="hdn_message_id" value='<c:out value="${in_m_list.id}" />' />
@@ -400,11 +399,11 @@ data-config="{'skin':'http://static.tumblr.com/mky4cgu/RFrmbhpc1/simplesazulfals
 <td class="td" valign="bottom" align="center">
         <div id="content">
 	    <div class="post inactive">
-		<div class="title">
-			<img src='images/message.png' alt="view" title="Send message"></a>
+		<div>
+			<a href="#" onclick="this.parentElement.nextSibling.nextSibling.style.display = 'block';"><img src='images/message.png'></a>
 		</div>
-		<div class="entry" style="display:none;">
-			<form id="send_message" method="post" action="user_action.do">
+		<div style="display:none">
+			<form method="post" action="user_action.do">
             <input type="hidden" name="hdn_action_type" value='send_message' />
             <input type="hidden" name="hdn_message_id" value='<c:out value="${list.id}" />' />
             <input type="hidden" name="hdn_message_id2" value="flag" />

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.belhard.beans.SocialBean;
 import com.belhard.dao.DaoException;
@@ -13,7 +14,6 @@ import com.belhard.utils.Constants;
 import com.belhard.utils.Queries;
 
 public class DbUserImpl implements IUserDAO {
-
 	public SocialBean checkLoginUser(String email, String pass)
 			throws DaoException {
 		Connection connection = null;
@@ -123,6 +123,43 @@ public class DbUserImpl implements IUserDAO {
 		} finally {
 			ConnectionPool.closeDbResources(connection, ps, rs);
 		}
+	}
+	
+	public List<SocialBean> UserSearchList(String keyword, List<SocialBean> lst, String column, int currId) throws DaoException {
+    	Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			connection = ConnectionPool.getPool().getConnection();
+			connection.setAutoCommit(false);
+			ps = connection.prepareStatement("SELECT * FROM USERS WHERE  "+column+" LIKE '%"+keyword+"%' AND ACTIVE=TRUE ;");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("IDUSERS");
+				String firstname = rs.getString("FIRSTNAME");
+				String lastname = rs.getString("LASTNAME");
+				String email = rs.getString("EMAIL");
+				boolean gender = rs.getBoolean("GENDER");
+				String country = rs.getString("COUNTRY");
+				SocialBean sb = new SocialBean();
+				sb.setId(id);
+                sb.setFirstName(firstname);
+                sb.setLastName(lastname);
+                sb.setEmail(email);
+                sb.setGender(gender);
+                sb.setCountry(country);
+                
+                if(currId != id){
+                	lst.add(sb);	
+				} 
+			}	
+			connection.commit();
+		}catch (SQLException e) {
+			throw new DaoException();
+		} finally {
+			ConnectionPool.closeDbResources(connection, ps, rs);
+		}
+		return lst;
 	}
 
 }

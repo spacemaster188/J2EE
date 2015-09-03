@@ -17,6 +17,7 @@ public class Constants {
 	public static final String ERROR_PAGE = "err.do";
 	public static final String INDEX_PAGE = "index.do";
 	public static final String USR = "usr";
+	public static final String USER = "user";
 	public static final String ID = "id";
 	public static final String DT = "dt";
 	public static final String NEWS_MESSAGE = "newsMessage";

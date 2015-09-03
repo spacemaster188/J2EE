@@ -14,6 +14,7 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 import com.belhard.beans.SocialBean;
 import com.belhard.dao.DaoException;
@@ -23,12 +24,20 @@ import com.belhard.utils.Constants;
 
 public class FileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger("FileUploadServlet.class");
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding(Constants.UTF8);
 		response.setCharacterEncoding(Constants.UTF8);
 		HttpSession session = request.getSession();
-		SocialBean user = (SocialBean) session.getAttribute(Constants.USR);
+		SocialBean user = null;
+		try {
+	        user = (SocialBean)session.getAttribute(Constants.USR);
+		} catch (Exception e) {
+			logger.error(Constants.NO_USER_IN_SESSION);
+			response.sendRedirect(Constants.LOGIN_PAGE);
+			return;
+		}
 		int idUser = user.getId();
 
 		boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
