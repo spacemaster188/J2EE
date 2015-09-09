@@ -3,6 +3,10 @@ package com.belhard.utils;
 public enum Queries {
 		 
 	 GetActive("SELECT active FROM users WHERE email=? ;"),
+	 GetMessagesByIdTo("SELECT * FROM MESSAGES WHERE  IDTO=? ;"),
+	 InsertMessage("INSERT INTO MESSAGES (IDFROM, IDTO, DT, MESSAGE) VALUES(?,?,?,?);"),
+	 GetMessagesByIdFrom("SELECT * FROM MESSAGES WHERE  IDFROM=? ;"),
+	 GetMessages("SELECT * FROM MESSAGES WHERE IDTO=? AND IDFROM=? OR IDTO=? AND IDFROM=? ;"),
 	 GetUserByCookies("SELECT * FROM users WHERE email=? AND password=? ;"),
 	 GetUserByEmail("SELECT * FROM users WHERE email=? ;"),
 	 GetUserById("SELECT * FROM users WHERE idUsers=? ;"),

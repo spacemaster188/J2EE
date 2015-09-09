@@ -3,7 +3,6 @@ package com.belhard.servlets;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,8 +50,7 @@ public class GetListsServlet extends HttpServlet {
 			request.setAttribute(Constants.MUSIC_LIST, musicList);
             List<SocialBean> lastMsgsList = SocialUsersService.getLastMessages(user.getId());
 			session.setAttribute("last_message_list", lastMsgsList);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(Constants.INDEX_PAGE);
-			dispatcher.forward(request, response);
+			response.sendRedirect(Constants.INDEX_PAGE);
 		} catch (DaoException e) {
 			DaoException.jump(request, response, Constants.DAO_ERR);
 		}	

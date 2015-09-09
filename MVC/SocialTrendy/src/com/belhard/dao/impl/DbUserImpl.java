@@ -73,7 +73,8 @@ public class DbUserImpl implements IUserDAO {
 					return null;
 				}
 				ps2.executeUpdate();
-				rs = ps3.executeQuery(); // get user's id
+				/** get user's id */
+				rs = ps3.executeQuery();
 				int idUser = 0;
 				if (rs.next()) {
 					idUser = rs.getInt(Constants.IDUSERS);
@@ -135,20 +136,19 @@ public class DbUserImpl implements IUserDAO {
 			ps = connection.prepareStatement("SELECT * FROM USERS WHERE  "+column+" LIKE '%"+keyword+"%' AND ACTIVE=TRUE ;");
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				int id = rs.getInt("IDUSERS");
-				String firstname = rs.getString("FIRSTNAME");
-				String lastname = rs.getString("LASTNAME");
-				String email = rs.getString("EMAIL");
-				boolean gender = rs.getBoolean("GENDER");
-				String country = rs.getString("COUNTRY");
+				int id = rs.getInt(Constants.IDUSERS);
+				String firstname = rs.getString(Constants.FIRSTNAME);
+				String lastname = rs.getString(Constants.LASTNAME);
+				String email = rs.getString(Constants.EMAIL);
+				boolean gender = rs.getBoolean(Constants.GENDER);
+				String country = rs.getString(Constants.COUNTRY);
 				SocialBean sb = new SocialBean();
 				sb.setId(id);
                 sb.setFirstName(firstname);
                 sb.setLastName(lastname);
                 sb.setEmail(email);
                 sb.setGender(gender);
-                sb.setCountry(country);
-                
+                sb.setCountry(country); 
                 if(currId != id){
                 	lst.add(sb);	
 				} 
@@ -161,5 +161,4 @@ public class DbUserImpl implements IUserDAO {
 		}
 		return lst;
 	}
-
 }

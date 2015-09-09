@@ -45,9 +45,9 @@ $jq('.reportbox').fadeOut('fast')},3000);
 </head>
 <body>
 <!--start music script-->
-<c:if test = "${!empty mus_list}">  
+<c:if test = "${sessionScope.mus_list != null}">  
 <script type="text/javascript" src="http://scmplayer.net/script.js" 
-data-config="{'skin':'http://static.tumblr.com/mky4cgu/RFrmbhpc1/simplesazulfalsa-moral.css','volume':21,'autoplay':false,'shuffle':false,'repeat':1,'placement':'bottom','showplaylist':false,'playlist':[<%= request.getAttribute("mus_list") %>]}" ></script>
+data-config="{'skin':'http://static.tumblr.com/mky4cgu/RFrmbhpc1/simplesazulfalsa-moral.css','volume':21,'autoplay':false,'shuffle':false,'repeat':1,'placement':'bottom','showplaylist':false,'playlist':[<%= session.getAttribute("mus_list") %>]}" ></script>
 </c:if>
 <!--end music script-->
 <!--start reportBox script-->

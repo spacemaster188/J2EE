@@ -1,8 +1,6 @@
 package com.belhard.utils;
 
 public class Constants {
-	public static final int LOGIN_REDIRECT_INT = -1;
-	public static final int INACTIVE_USER_INT = 0;
 	public static final String INIT_CONTEXT = "java:/comp/env";
 	public static final String DATA_SOURCE = "jdbc/tmsDB";
 	public static final String DANGER_STR = "'";
@@ -19,8 +17,12 @@ public class Constants {
 	public static final String USR = "usr";
 	public static final String USER = "user";
 	public static final String ID = "id";
+	public static final String ME = "me";
 	public static final String DT = "dt";
 	public static final String NEWS_MESSAGE = "newsMessage";
+	public static final String MESSAGE = "MESSAGE";
+	public static final String IDFROM = "IDFROM";
+	public static final String IDTO = "IDTO";
 	public static final String NEWS_LIST = "news_list";
 	public static final String STATUS_BEAN = "statusBean";
 	public static final String FRIENDS_LIST = "friends_list";

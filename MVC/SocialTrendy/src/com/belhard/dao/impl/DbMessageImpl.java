@@ -12,6 +12,8 @@ import com.belhard.beans.SocialBean;
 import com.belhard.dao.DaoException;
 import com.belhard.dao.IMessageDAO;
 import com.belhard.db.ConnectionPool;
+import com.belhard.utils.Constants;
+import com.belhard.utils.Queries;
 
 public class DbMessageImpl implements IMessageDAO {
 	@Override
@@ -23,12 +25,13 @@ public class DbMessageImpl implements IMessageDAO {
 		try {
 			connection = ConnectionPool.getPool().getConnection();
 			connection.setAutoCommit(false);
-			ps = connection.prepareStatement("SELECT * FROM MESSAGES WHERE  idTo="+currId+" ;");
+			ps = connection.prepareStatement(Queries.GetMessagesByIdTo.getQuery());
+			ps.setInt(1, currId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				int id_from = rs.getInt("idFrom");
-				String message = rs.getString("MESSAGE");
-				Date msg_date = rs.getDate("dt");
+				int id_from = rs.getInt(Constants.IDFROM);
+				String message = rs.getString(Constants.MESSAGE);
+				Date msg_date = rs.getDate(Constants.DT);
 				SocialBean sb = new SocialBean();
 				sb.setId(id_from);
                 sb.setNewsMessage(message);
@@ -51,7 +54,11 @@ public class DbMessageImpl implements IMessageDAO {
 			connection = ConnectionPool.getPool().getConnection();
 			connection.setAutoCommit(false);
 			synchronized (DbMessageImpl.class) {
-				ps=connection.prepareStatement("INSERT INTO MESSAGES (idFrom, idTo, dt, MESSAGE) VALUES(" + currId + "," + sendId + ",'" + curStringDateTime + "','" + message + "');");
+				ps=connection.prepareStatement(Queries.InsertMessage.getQuery());
+				ps.setInt(1, currId);
+				ps.setInt(2, sendId);
+				ps.setString(3, curStringDateTime);
+				ps.setString(4, message);
 				ps.executeUpdate();
 				connection.commit();
 			}
@@ -71,12 +78,13 @@ public class DbMessageImpl implements IMessageDAO {
 		try {
 			connection = ConnectionPool.getPool().getConnection();
 			connection.setAutoCommit(false);
-			ps = connection.prepareStatement("SELECT * FROM MESSAGES WHERE  idFrom="+currId+" ;");
+			ps = connection.prepareStatement(Queries.GetMessagesByIdFrom.getQuery());
+			ps.setInt(1, currId);
 			rs = ps.executeQuery();	
 			while (rs.next()) {
-				int id_to = rs.getInt("idTo");
-				String message = rs.getString("MESSAGE");
-				Date msg_date = rs.getDate("dt");
+				int id_to = rs.getInt(Constants.IDTO);
+				String message = rs.getString(Constants.MESSAGE);
+				Date msg_date = rs.getDate(Constants.DT);
 				SocialBean sb = new SocialBean();
 				sb.setId(id_to);
                 sb.setNewsMessage(message);
@@ -100,10 +108,11 @@ public class DbMessageImpl implements IMessageDAO {
 		try {
 			connection = ConnectionPool.getPool().getConnection();
 			connection.setAutoCommit(false);
-			ps = connection.prepareStatement("SELECT * FROM MESSAGES WHERE idTo="+currentId+" ;");
+			ps = connection.prepareStatement(Queries.GetMessagesByIdTo.getQuery());
+			ps.setInt(1, currentId);
 			rs = ps.executeQuery();	
 			while (rs.next()) {	
-			lastIncomingId = rs.getInt("idFrom");	    
+			lastIncomingId = rs.getInt(Constants.IDFROM);	    
 			}	
 			connection.commit();
 		}catch (SQLException e) {
@@ -123,24 +132,26 @@ public class DbMessageImpl implements IMessageDAO {
 		try {
 			connection = ConnectionPool.getPool().getConnection();
 			connection.setAutoCommit(false);
-			ps = connection.prepareStatement("SELECT * FROM MESSAGES WHERE idTo="+currentId+" AND idFrom="+incomingId+" OR IDTO="+incomingId+" AND IDFROM="+currentId+";");
+			ps = connection.prepareStatement(Queries.GetMessages.getQuery());
+			ps.setInt(1, currentId);
+			ps.setInt(2, incomingId);
+			ps.setInt(3, incomingId);
+			ps.setInt(4, currentId);
 			rs = ps.executeQuery();
-			
 			while (rs.next()) {
 		    SocialBean sb = new SocialBean();
-			int idFrom = rs.getInt("idFrom");
-			String msg = rs.getString("MESSAGE");
-			Date msg_date = rs.getDate("dt");
+			int idFrom = rs.getInt(Constants.IDFROM);
+			String msg = rs.getString(Constants.MESSAGE);
+			Date msg_date = rs.getDate(Constants.DT);
 			
 			if(idFrom==currentId){
-			sb.setFirstName("Me");
+			sb.setFirstName(Constants.ME);
 			}
 			sb.setId(incomingId);
 			sb.setNewsMessage(msg);
 			sb.setDt(msg_date);
 			lst.add(sb);   
 			}
-		
 			connection.commit();
 		}catch (SQLException e) {
 			throw new DaoException();
